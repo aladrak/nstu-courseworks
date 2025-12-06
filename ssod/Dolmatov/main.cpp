@@ -1,4 +1,3 @@
-using namespace std;
 #include "LongNumber.h"
 #include <cassert>
 
