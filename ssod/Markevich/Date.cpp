@@ -1,11 +1,7 @@
 #include "Date.h"
-#include <cmath>
-#include <ctime>
 #include <iomanip>
-#include <cassert>
 
 namespace {
-    const int EPOCH_YEAR = 1970;
     const int DAYS_FROM_EPOCH_TO_0001 = -719528; // для расчёта
 }
 
@@ -23,12 +19,12 @@ int Date::daysInMonth(int m, int y) {
 
 void Date::normalize() {
     if (month < 1 || month > 12)
-        throw std::invalid_argument("Invalid month");
+        throw invalid_argument("Invalid month");
     if (day < 1 || day > daysInMonth(month, year))
-        throw std::invalid_argument("Invalid day for given month/year");
+        throw invalid_argument("Invalid day for given month/year");
 }
 
-Date::Date() : day(1), month(1), year(EPOCH_YEAR) {}
+Date::Date() : day(1), month(1), year(1999) {}
 
 Date::Date(int d, int m, int y) : day(d), month(m), year(y) {
     normalize();
@@ -139,18 +135,23 @@ int Date::operator[](int index) const {
     }
 }
 
-Date::operator long long() const {
-    return daysFromEpoch(year, month, day);
+Date::operator string() const {
+    ostringstream oss;
+    oss << setfill('0')
+        << year << "-"
+        << setw(2) << month << "-"
+        << setw(2) << day;
+    return oss.str();
 }
 
 void Date::print(ostream& os) const {
-    os << std::setfill('0')
-       << std::setw(2) << day << "."
-       << std::setw(2) << month << "."
+    os << setfill('0')
+       << setw(2) << day << "."
+       << setw(2) << month << "."
        << year;
 }
 
-std::ostream& operator<<(ostream& os, const Date& d) {
+ostream& operator<<(ostream& os, const Date& d) {
     d.print(os);
     return os;
 }

@@ -1,7 +1,5 @@
 using namespace std;
-
 #include <iostream>
-#include <stdexcept>
 
 class Date {
 private:
@@ -50,9 +48,9 @@ public:
     int operator[](int index) const; // 0 день, 1 месяц, 2 год
 
     // Преобразование к базовому типу
-    explicit operator long long() const; // количество дней с эпохи
+    explicit operator string() const; // приведение к строке
 
     // Вывод
-    void print(std::ostream& os = std::cout) const;
-    friend std::ostream& operator<<(std::ostream& os, const Date& d);
+    void print(ostream& os = cout) const;
+    friend ostream& operator<<(ostream& os, const Date& d);
 };
