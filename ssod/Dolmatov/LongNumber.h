@@ -5,7 +5,7 @@ class LongNumber {
 private:
     string digits;
 
-    static string normalizeString(std::string s);
+    static string normalizeString(string s);
     static string addStrings(const string& a, const string& b);
     static string subtractStrings(const string& a, const string& b);
     static string multiplyStrings(const string& a, const string& b);
