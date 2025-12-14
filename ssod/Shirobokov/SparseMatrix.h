@@ -1,4 +1,5 @@
 // g++ main.cpp -o SparseMartix.exe
+using namespace std;
 #include <vector>
 #include <iostream>
 #include <numeric>
@@ -14,7 +15,7 @@ private:
 
     size_t rows_;
     size_t cols_;
-    std::vector<Element> data_;
+    vector<Element> data_;
 
     // Вспомогательная функция: поиск индекса элемента по (i, j)
     int findIndex(size_t i, size_t j) const {
@@ -28,7 +29,7 @@ private:
     // Внутренняя установка значения (с проверкой)
     void set(size_t i, size_t j, double val) {
         if (i >= rows_ || j >= cols_)
-            throw std::out_of_range("Index out of bounds.");
+            throw out_of_range("Index out of bounds.");
         int idx = findIndex(i, j);
         if (val == 0.0) {
             if (idx != -1)
@@ -56,7 +57,7 @@ public:
 
     SparseMatrix(size_t rows, size_t cols) : rows_(rows), cols_(cols) {
         if (rows == 0 || cols == 0)
-            throw std::invalid_argument("Matrix dimensions must be positive.");
+            throw invalid_argument("Matrix dimensions must be positive.");
     }
 
     SparseMatrix(const SparseMatrix& other)
@@ -79,7 +80,7 @@ public:
 
     double operator()(size_t i, size_t j) const {
         if (i >= rows_ || j >= cols_)
-            throw std::out_of_range("Index out of bounds.");
+            throw out_of_range("Index out of bounds.");
         int idx = findIndex(i, j);
         return (idx == -1) ? 0.0 : data_[idx].value;
     }
@@ -104,12 +105,12 @@ public:
 
     SparseMatrix operator*(const SparseMatrix& other) const {
         if (!can_multiply(other))
-            throw std::invalid_argument("Matrix dimensions incompatible for multiplication.");
+            throw invalid_argument("Matrix dimensions incompatible for multiplication.");
 
         SparseMatrix result(rows_, other.cols_);
 
         // Группируем элементы правой матрицы по строкам для быстрого доступа
-        std::vector<std::vector<std::pair<size_t, double>>> b_by_row(other.rows_);
+        vector<vector<pair<size_t, double>>> b_by_row(other.rows_);
         for (const auto& e : other.data_) {
             b_by_row[e.row].emplace_back(e.col, e.value);
         }
@@ -136,7 +137,7 @@ public:
 
     SparseMatrix operator+(const SparseMatrix& other) const {
         if (!equal_size(other))
-            throw std::invalid_argument("Matrix dimensions must match for addition.");
+            throw invalid_argument("Matrix dimensions must match for addition.");
         SparseMatrix result(rows_, cols_);
         for (const auto& e : data_) {
             double val = e.value + other(e.row, e.col);
@@ -153,7 +154,7 @@ public:
 
     SparseMatrix operator-(const SparseMatrix& other) const {
         if (!equal_size(other))
-            throw std::invalid_argument("Matrix dimensions must match for subtraction.");
+            throw invalid_argument("Matrix dimensions must match for subtraction.");
         SparseMatrix result(rows_, cols_);
         for (const auto& e : data_) {
             double val = e.value - other(e.row, e.col);
@@ -193,7 +194,7 @@ public:
 
     SparseMatrix operator/(double scalar) const {
         if (scalar == 0.0)
-            throw std::invalid_argument("Division by zero.");
+            throw invalid_argument("Division by zero.");
         return (*this) * (1.0 / scalar);
     }
 
@@ -272,9 +273,9 @@ public:
     void print() const {
         for (size_t i = 0; i < rows_; ++i) {
             for (size_t j = 0; j < cols_; ++j) {
-                std::cout << (*this)(i, j) << "\t";
+                cout << (*this)(i, j) << "\t";
             }
-            std::cout << "\n";
+            cout << "\n";
         }
     }
 };
