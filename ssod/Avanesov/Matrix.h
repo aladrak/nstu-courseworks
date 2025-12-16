@@ -109,7 +109,7 @@ public:
         return result;
     }
 
-    // Скаляр * матрица (дружественная функция)
+    // Скаляр * Matrix (дружественная функция)
     friend Matrix operator*(double scalar, const Matrix& mat) {
         return mat * scalar;
     }

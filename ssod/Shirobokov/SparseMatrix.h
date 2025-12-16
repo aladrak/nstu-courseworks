@@ -51,7 +51,7 @@ private:
     }
 
 public:
-    // === Конструкторы и деструктор ===
+    //  Конструкторы и деструктор 
 
     SparseMatrix() : rows_(0), cols_(0) {}
 
@@ -65,7 +65,7 @@ public:
 
     ~SparseMatrix() = default;
 
-    // === Оператор присваивания ===
+    //  Оператор присваивания 
 
     SparseMatrix& operator=(const SparseMatrix& other) {
         if (this != &other) {
@@ -76,7 +76,7 @@ public:
         return *this;
     }
 
-    // === Доступ к элементам ===
+    //  Доступ к элементам 
 
     double operator()(size_t i, size_t j) const {
         if (i >= rows_ || j >= cols_)
@@ -85,13 +85,13 @@ public:
         return (idx == -1) ? 0.0 : data_[idx].value;
     }
 
-    // === Установка значения ===
+    //  Установка значения 
 
     void setValue(size_t i, size_t j, double val) {
         set(i, j, val);
     }
 
-    // === Проверки ===
+    //  Проверки 
 
     bool can_multiply(const SparseMatrix& other) const {
         return cols_ == other.rows_;
@@ -101,7 +101,7 @@ public:
         return (rows_ == other.rows_) && (cols_ == other.cols_);
     }
 
-    // === Умножение матриц ===
+    //  Умножение матриц 
 
     SparseMatrix operator*(const SparseMatrix& other) const {
         if (!can_multiply(other))
@@ -133,7 +133,7 @@ public:
         return result;
     }
 
-    // === Сложение и вычитание ===
+    //  Сложение и вычитание 
 
     SparseMatrix operator+(const SparseMatrix& other) const {
         if (!equal_size(other))
@@ -169,7 +169,7 @@ public:
         return result;
     }
 
-    // === Арифметика с накоплением ===
+    //  Арифметика с накоплением 
 
     SparseMatrix& operator+=(const SparseMatrix& other) {
         *this = *this + other;
@@ -181,7 +181,7 @@ public:
         return *this;
     }
 
-    // === Умножение и деление на скаляр ===
+    //  Умножение и деление на скаляр 
 
     SparseMatrix operator*(double scalar) const {
         SparseMatrix res(rows_, cols_);
@@ -202,7 +202,7 @@ public:
         return mat * scalar;
     }
 
-    // === +=, -= со скаляром (только для ненулевых) ===
+    //  +=, -= со скаляром (только для ненулевых) 
 
     SparseMatrix& operator+=(double scalar) {
         for (auto& e : data_) e.value += scalar;
@@ -214,7 +214,7 @@ public:
         return *this;
     }
 
-    // === Унарные операторы ===
+    //  Унарные операторы 
 
     SparseMatrix& operator++() { // префикс
         for (auto& e : data_) ++e.value;
@@ -238,7 +238,7 @@ public:
         return tmp;
     }
 
-    // === Логические операторы ===
+    //  Логические операторы 
 
     bool operator==(const SparseMatrix& other) const {
         if (!equal_size(other)) return false;
@@ -262,13 +262,13 @@ public:
         return sum() > other.sum();
     }
 
-    // === Преобразование к базовому типу ===
+    //  Преобразование к базовому типу 
 
     operator double() const {
         return sum();
     }
 
-    // === Вывод ===
+    //  Вывод 
 
     void print() const {
         for (size_t i = 0; i < rows_; ++i) {

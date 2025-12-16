@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     try {
-        // Тест 1: конструкторы
+        // Test 1: конструкторы
         SparseMatrix A(3, 3);
         A.setValue(0, 0, 5.0);
         A.setValue(1, 2, -3.0);
@@ -13,22 +13,22 @@ int main() {
         cout << "Matrix A:\n";
         A.print();
 
-        // Тест 2: копирование
+        // Test 2: копирование
         SparseMatrix B = A;
         cout << "\nMatrix B (copy of A):\n";
         B.print();
 
-        // Тест 3: присваивание
+        // Test 3: присваивание
         SparseMatrix C(3, 3);
         C = A;
         cout << "\nMatrix C (assigned from A):\n";
         C.print();
 
-        // Тест 4: доступ
+        // Test 4: доступ
         cout << "\nA(0,0) = " << A(0,0) << "\n";
         cout << "A(2,2) = " << A(2,2) << "\n";
 
-        // Тест 5: сложение
+        // Test 5: сложение
         SparseMatrix D(3, 3);
         D.setValue(0, 0, 2.0);
         D.setValue(2, 1, 4.0);
@@ -36,7 +36,7 @@ int main() {
         cout << "\nA + D =\n";
         E.print();
 
-        // Тест 6: умножение на скаляр и матрицу
+        // Test 6: умножение на скаляр и матрицу
         SparseMatrix F = A * 2.0;
         cout << "\nA * 2 =\n";
         F.print();
@@ -57,26 +57,26 @@ int main() {
             Cm.print(); // Ожидаем: [16, 0] и [0, 15]
         }
 
-        // Тест 7: скаляр слева
+        // Test 7: скаляр слева
         SparseMatrix G = 0.5 * A;
         cout << "\n0.5 * A =\n";
         G.print();
 
-        // Тест 8: унарные ++
+        // Test 8: унарные ++
         SparseMatrix H = A;
         ++H;
         cout << "\n++A_copy =\n";
         H.print();
 
-        // Тест 9: логические
+        // Test 9: логические
         cout << "\nA == B? " << (A == B ? "yes" : "no") << "\n";
         cout << "A < D? " << (A < D ? "yes" : "no") << "\n";
 
-        // Тест 10: преобразование к double
+        // Test 10: преобразование к double
         double s = static_cast<double>(A);
         cout << "\nSum of A = " << s << "\n";
 
-        // Тест 11: исключения
+        // Test 11: исключения
         try {
         SparseMatrix bad(0, 5);
         } catch (const exception& e) {
