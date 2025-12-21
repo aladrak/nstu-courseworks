@@ -1,183 +1,74 @@
 using namespace std;
 #include <iostream>
-#include <cmath>
+#include <cmath> 
 
 class Fraction {
 private:
     long long num;  // числитель
     long long den;  // знаменатель (всегда > 0)
 
-    // Вспомогательная функция: НОД
-    static long long gcd(long long a, long long b) {
-        a = abs(a);
-        b = abs(b);
-        while (b != 0) {
-            long long t = b;
-            b = a % b;
-            a = t;
-        }
-        return a;
-    }
-
-    // Нормализация: знаменатель > 0, дробь несократима
-    void normalize() {
-        if (den == 0) {
-            throw invalid_argument("Denominator cannot be zero.");
-        }
-        if (den < 0) {
-            num = -num;
-            den = -den;
-        }
-        long long g = gcd(num, den);
-        if (g != 0) {
-            num /= g;
-            den /= g;
-        }
-    }
+    static long long gcd(long long a, long long b);
+    void normalize();
 
 public:
     // Конструкторы
-    Fraction() : num(0), den(1) {}
+    Fraction();
+    Fraction(long long n);
+    Fraction(long long n, long long d);
+    Fraction(const Fraction& other);
 
-    Fraction(long long n) : num(n), den(1) {}
-
-    Fraction(long long n, long long d) : num(n), den(d) {
-        normalize();
-    }
-
-    Fraction(const Fraction& other) : num(other.num), den(other.den) {}
-
-    // Деструктор (по умолчанию)
+    // Деструктор
     ~Fraction() = default;
 
     // Операторы присваивания
-    Fraction& operator=(const Fraction& other) {
-        if (this != &other) {
-            num = other.num;
-            den = other.den;
-        }
-        return *this;
-    }
-
-    Fraction& operator=(long long n) {
-        num = n;
-        den = 1;
-        return *this;
-    }
+    Fraction& operator=(const Fraction& other);
+    Fraction& operator=(long long n);
 
     // Арифметические операторы (члены)
-    Fraction operator+(const Fraction& other) const {
-        return Fraction(num * other.den + other.num * den, den * other.den);
-    }
-
-    Fraction operator-(const Fraction& other) const {
-        return Fraction(num * other.den - other.num * den, den * other.den);
-    }
-
-    Fraction operator*(const Fraction& other) const {
-        return Fraction(num * other.num, den * other.den);
-    }
-
-    Fraction operator/(const Fraction& other) const {
-        if (other.num == 0) {
-            throw domain_error("Division by zero.");
-        }
-        return Fraction(num * other.den, den * other.num);
-    }
+    Fraction operator+(const Fraction& other) const;
+    Fraction operator-(const Fraction& other) const;
+    Fraction operator*(const Fraction& other) const;
+    Fraction operator/(const Fraction& other) const;
 
     // Составные присваивания
-    Fraction& operator+=(const Fraction& other) {
-        *this = *this + other;
-        return *this;
-    }
-
-    Fraction& operator-=(const Fraction& other) {
-        *this = *this - other;
-        return *this;
-    }
-
-    Fraction& operator*=(const Fraction& other) {
-        *this = *this * other;
-        return *this;
-    }
-
-    Fraction& operator/=(const Fraction& other) {
-        *this = *this / other;
-        return *this;
-    }
+    Fraction& operator+=(const Fraction& other);
+    Fraction& operator-=(const Fraction& other);
+    Fraction& operator*=(const Fraction& other);
+    Fraction& operator/=(const Fraction& other);
 
     // Унарные инкремент/декремент
-    Fraction& operator++() {        // префиксный ++
-        num += den;
-        return *this;
-    }
-
-    Fraction operator++(int) {      // постфиксный ++
-        Fraction tmp(*this);
-        ++(*this);
-        return tmp;
-    }
-
-    Fraction& operator--() {        // префиксный --
-        num -= den;
-        return *this;
-    }
-
-    Fraction operator--(int) {      // постфиксный --
-        Fraction tmp(*this);
-        --(*this);
-        return tmp;
-    }
+    Fraction& operator++();            // префиксный ++
+    Fraction operator++(int);          // постфиксный ++
+    Fraction& operator--();            // префиксный --
+    Fraction operator--(int);          // постфиксный --
 
     // Логические операторы
-    bool operator==(const Fraction& other) const {
-        return num == other.num && den == other.den;
-    }
-
-    bool operator!=(const Fraction& other) const {
-        return !(*this == other);
-    }
-
-    bool operator<(const Fraction& other) const {
-        return num * other.den < other.num * den;
-    }
-
-    bool operator>(const Fraction& other) const {
-        return other < *this;
-    }
-
-    bool operator<=(const Fraction& other) const {
-        return !(*this > other);
-    }
-
-    bool operator>=(const Fraction& other) const {
-        return !(*this < other);
-    }
+    bool operator==(const Fraction& other) const;
+    bool operator!=(const Fraction& other) const;
+    bool operator<(const Fraction& other) const;
+    bool operator>(const Fraction& other) const;
+    bool operator<=(const Fraction& other) const;
+    bool operator>=(const Fraction& other) const;
 
     // Операторы преобразования
-    explicit operator double() const { return static_cast<double>(num) / den; }
-    explicit operator float() const { return static_cast<float>(num) / den; }
-    explicit operator long double() const { return static_cast<long double>(num) / den; }
-    explicit operator int() const { return static_cast<int>(static_cast<double>(*this)); }
-    explicit operator long long() const { return static_cast<long long>(static_cast<double>(*this)); }
+    explicit operator double() const;
+    explicit operator float() const;
+    explicit operator long double() const;
+    explicit operator int() const;
+    explicit operator long long() const;
 
     // Вывод
-    void print() const {
-        cout << num << '/' << den;
-    }
+    void print() const;
 
-    // Дружественные операторы для смешанных операций и потоков
-    friend Fraction operator+(const Fraction& a, long long b) { return a + Fraction(b); }
-    friend Fraction operator+(long long a, const Fraction& b) { return Fraction(a) + b; }
-    friend Fraction operator-(const Fraction& a, long long b) { return a - Fraction(b); }
-    friend Fraction operator-(long long a, const Fraction& b) { return Fraction(a) - b; }
-    friend Fraction operator*(const Fraction& a, long long b) { return a * Fraction(b); }
-    friend Fraction operator*(long long a, const Fraction& b) { return Fraction(a) * b; }
-    friend Fraction operator/(const Fraction& a, long long b) { return a / Fraction(b); }
-    friend Fraction operator/(long long a, const Fraction& b) { return Fraction(a) / b; }
+    // Дружественные функции (объявлены внутри класса)
+    friend Fraction operator+(const Fraction& a, long long b);
+    friend Fraction operator+(long long a, const Fraction& b);
+    friend Fraction operator-(const Fraction& a, long long b);
+    friend Fraction operator-(long long a, const Fraction& b);
+    friend Fraction operator*(const Fraction& a, long long b);
+    friend Fraction operator*(long long a, const Fraction& b);
+    friend Fraction operator/(const Fraction& a, long long b);
+    friend Fraction operator/(long long a, const Fraction& b);
 
-    friend ostream& operator<<(ostream& os, const Fraction& f) {
-        os << f.num << '/' << f.den;
-        return os;
-    }
+    friend std::ostream& operator<<(std::ostream& os, const Fraction& f);
 };
